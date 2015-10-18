@@ -234,23 +234,10 @@ str(activityData)
 
 <p>First, we are interested in seeing the total number of steps taken per day.</p>
 
-<pre><code class="r">attach(activityData)
-</code></pre>
-
-<pre><code>## The following objects are masked from activityData (pos = 5):
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from imputedActivityData:
-## 
-##     date, interval, steps
-</code></pre>
-
 <pre><code class="r"># sum the number of steps for each day
-stepsByDay &lt;- aggregate(steps ~ date, FUN=sum, na.rm=TRUE)
+stepsByDay &lt;- aggregate(activityData$steps ~ activityData$date, FUN=sum, na.rm=TRUE)
 # rename the columns
 colnames(stepsByDay) &lt;- c(&quot;day&quot;, &quot;totalSteps&quot;)
-detach(activityData)
 # create a histogram and add the x-axis ticks and labels
 hist(stepsByDay$totalSteps, col = &quot;green&quot;, breaks = 20, main = &quot;Histogram of Total Steps Taken per Day&quot;, 
      xaxt=&#39;n&#39;, xlim = c(0,22000), xlab = &quot;Total Steps Taken per Day&quot;)
@@ -326,23 +313,10 @@ summary(stepsByDay$totalSteps)
 
 <p>We would like to see if there are any daily trends in these intervals, so we create a time series plot of each 5 minute interval and the average number of steps taken during that interval across all the days.</p>
 
-<pre><code class="r">attach(activityData)
-</code></pre>
-
-<pre><code>## The following objects are masked from activityData (pos = 5):
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from imputedActivityData:
-## 
-##     date, interval, steps
-</code></pre>
-
 <pre><code class="r"># average the number of steps for each interval
-stepsByInterval &lt;- aggregate(steps ~ interval, FUN=mean, na.rm=TRUE)
+stepsByInterval &lt;- aggregate(activityData$steps ~ activityData$interval, FUN=mean, na.rm=TRUE)
 # rename the columns
 colnames(stepsByInterval) &lt;- c(&quot;interval&quot;, &quot;averageSteps&quot;)
-detach(activityData)
 # create a line plot of the average steps taken per interval
 library(ggplot2)
 ggplot(stepsByInterval, aes(interval, averageSteps)) + geom_line(col=&quot;steelblue&quot;,lwd=1.5) + theme_bw() + 
@@ -425,23 +399,10 @@ sum(is.na(imputedActivityData$steps))
 
 <p>Let&#39;s take another look at a histogram of the total steps taken per day now that we have replaced the missing values:</p>
 
-<pre><code class="r">attach(imputedActivityData)
-</code></pre>
-
-<pre><code>## The following objects are masked from activityData:
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from imputedActivityData (pos = 6):
-## 
-##     date, interval, steps, stepsByInterval$averageSteps
-</code></pre>
-
 <pre><code class="r"># sum the number of steps for each day
-stepsByDay &lt;- aggregate(steps ~ date, FUN=sum, na.rm=TRUE)
+stepsByDay &lt;- aggregate(imputedActivityData$steps ~ imputedActivityData$date, FUN=sum, na.rm=TRUE)
 # rename the columns
 colnames(stepsByDay) &lt;- c(&quot;day&quot;, &quot;totalSteps&quot;)
-detach(imputedActivityData)
 # create a histogram and add the x-axis ticks and labels
 hist(stepsByDay$totalSteps, col = &quot;cyan&quot;, breaks = 20, 
      main = &quot;Histogram of Total Steps Taken per Day \nusing Imputed Values&quot;, xaxt=&#39;n&#39;, 

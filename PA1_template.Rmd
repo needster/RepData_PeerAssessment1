@@ -34,12 +34,10 @@ str(activityData)
 First, we are interested in seeing the total number of steps taken per day.
 
 ```{r}
-attach(activityData)
 # sum the number of steps for each day
-stepsByDay <- aggregate(steps ~ date, FUN=sum, na.rm=TRUE)
+stepsByDay <- aggregate(activityData$steps ~ activityData$date, FUN=sum, na.rm=TRUE)
 # rename the columns
 colnames(stepsByDay) <- c("day", "totalSteps")
-detach(activityData)
 # create a histogram and add the x-axis ticks and labels
 hist(stepsByDay$totalSteps, col = "green", breaks = 20, main = "Histogram of Total Steps Taken per Day", 
      xaxt='n', xlim = c(0,22000), xlab = "Total Steps Taken per Day")
@@ -76,12 +74,10 @@ We observe that the values range from 0 to 2355. The values start a 0, then incr
 We would like to see if there are any daily trends in these intervals, so we create a time series plot of each 5 minute interval and the average number of steps taken during that interval across all the days.
 
 ```{r}
-attach(activityData)
 # average the number of steps for each interval
-stepsByInterval <- aggregate(steps ~ interval, FUN=mean, na.rm=TRUE)
+stepsByInterval <- aggregate(activityData$steps ~ activityData$interval, FUN=mean, na.rm=TRUE)
 # rename the columns
 colnames(stepsByInterval) <- c("interval", "averageSteps")
-detach(activityData)
 # create a line plot of the average steps taken per interval
 library(ggplot2)
 ggplot(stepsByInterval, aes(interval, averageSteps)) + geom_line(col="steelblue",lwd=1.5) + theme_bw() + 
@@ -138,12 +134,10 @@ Success!
 Let's take another look at a histogram of the total steps taken per day now that we have replaced the missing values:
 
 ```{r}
-attach(imputedActivityData)
 # sum the number of steps for each day
-stepsByDay <- aggregate(steps ~ date, FUN=sum, na.rm=TRUE)
+stepsByDay <- aggregate(imputedActivityData$steps ~ imputedActivityData$date, FUN=sum, na.rm=TRUE)
 # rename the columns
 colnames(stepsByDay) <- c("day", "totalSteps")
-detach(imputedActivityData)
 # create a histogram and add the x-axis ticks and labels
 hist(stepsByDay$totalSteps, col = "cyan", breaks = 20, 
      main = "Histogram of Total Steps Taken per Day \nusing Imputed Values", xaxt='n', 

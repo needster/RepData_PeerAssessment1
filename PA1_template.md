@@ -43,25 +43,10 @@ First, we are interested in seeing the total number of steps taken per day.
 
 
 ```r
-attach(activityData)
-```
-
-```
-## The following objects are masked from activityData (pos = 5):
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from imputedActivityData:
-## 
-##     date, interval, steps
-```
-
-```r
 # sum the number of steps for each day
-stepsByDay <- aggregate(steps ~ date, FUN=sum, na.rm=TRUE)
+stepsByDay <- aggregate(activityData$steps ~ activityData$date, FUN=sum, na.rm=TRUE)
 # rename the columns
 colnames(stepsByDay) <- c("day", "totalSteps")
-detach(activityData)
 # create a histogram and add the x-axis ticks and labels
 hist(stepsByDay$totalSteps, col = "green", breaks = 20, main = "Histogram of Total Steps Taken per Day", 
      xaxt='n', xlim = c(0,22000), xlab = "Total Steps Taken per Day")
@@ -151,25 +136,10 @@ We would like to see if there are any daily trends in these intervals, so we cre
 
 
 ```r
-attach(activityData)
-```
-
-```
-## The following objects are masked from activityData (pos = 5):
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from imputedActivityData:
-## 
-##     date, interval, steps
-```
-
-```r
 # average the number of steps for each interval
-stepsByInterval <- aggregate(steps ~ interval, FUN=mean, na.rm=TRUE)
+stepsByInterval <- aggregate(activityData$steps ~ activityData$interval, FUN=mean, na.rm=TRUE)
 # rename the columns
 colnames(stepsByInterval) <- c("interval", "averageSteps")
-detach(activityData)
 # create a line plot of the average steps taken per interval
 library(ggplot2)
 ggplot(stepsByInterval, aes(interval, averageSteps)) + geom_line(col="steelblue",lwd=1.5) + theme_bw() + 
@@ -269,25 +239,10 @@ Let's take another look at a histogram of the total steps taken per day now that
 
 
 ```r
-attach(imputedActivityData)
-```
-
-```
-## The following objects are masked from activityData:
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from imputedActivityData (pos = 6):
-## 
-##     date, interval, steps, stepsByInterval$averageSteps
-```
-
-```r
 # sum the number of steps for each day
-stepsByDay <- aggregate(steps ~ date, FUN=sum, na.rm=TRUE)
+stepsByDay <- aggregate(imputedActivityData$steps ~ imputedActivityData$date, FUN=sum, na.rm=TRUE)
 # rename the columns
 colnames(stepsByDay) <- c("day", "totalSteps")
-detach(imputedActivityData)
 # create a histogram and add the x-axis ticks and labels
 hist(stepsByDay$totalSteps, col = "cyan", breaks = 20, 
      main = "Histogram of Total Steps Taken per Day \nusing Imputed Values", xaxt='n', 
